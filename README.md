@@ -12,7 +12,7 @@
   </p>
 </div>
 
-<img src="leo.png" alt="LEO">
+<img src="LEO.gif" alt="LEO">
 
 <!-- TABLE OF CONTENTS -->
 <details>
