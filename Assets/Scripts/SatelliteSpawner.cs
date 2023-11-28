@@ -13,9 +13,19 @@ public class SatelliteSpawner : MonoBehaviour
 {
     [SerializeField] private TextAsset tleTextAsset; // Assign your text file in the Unity inspector.
     [SerializeField] private GameObject satellitePrefab;
+    [SerializeField] private int subdivisions = 100;
 
     private void Start()
     {
+        // Get the command line arguments
+        string[] commandLineArgs = Environment.GetCommandLineArgs();
+
+        if (commandLineArgs.Length > 1)
+        {
+            if (int.TryParse(commandLineArgs[1], out var output))
+                subdivisions = output;
+        }
+        
         EntityManager em = World.DefaultGameObjectInjectionWorld.EntityManager;
         string tleText = Resources.Load<TextAsset>("full_catalog").text;
         string[] tleLines = tleText.Split('\n');
@@ -37,6 +47,7 @@ public class SatelliteSpawner : MonoBehaviour
             RenderMeshArray test = new RenderMeshArray(new[] { cubeMat }, new[] { cubeMesh });
             RenderMeshUtility.AddComponents(entity, em, desc, test, MaterialMeshInfo.FromRenderMeshArrayIndices(0, 0));
             
+            //em.AddComponent<C>()
             em.AddComponent<LocalTransform>(entity);
             em.SetComponentData(entity, new LocalTransform
             {
@@ -52,7 +63,7 @@ public class SatelliteSpawner : MonoBehaviour
             Satellite satellite = new Satellite(tle);
             em.AddComponentData(entity, new SatellitePositions
             {
-                Positions = PrecalculatePositions(satellite, 1)
+                Positions = PrecalculatePositions(satellite, subdivisions)
             });
         }
     }

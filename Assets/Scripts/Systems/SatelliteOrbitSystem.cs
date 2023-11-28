@@ -17,19 +17,19 @@ namespace Systems
     public partial struct SatelliteOrbitSystem : ISystem
     {
         private int i;
-
+        
         [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             i = 0;
         }
 
-        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            int time = TimeManager.Instance.GetTime();
             foreach (var (transform, sat) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<SatellitePositions>>())
             {
-                transform.ValueRW.Position = sat.ValueRO.Positions[i % sat.ValueRO.Positions.Length];
+                transform.ValueRW.Position = sat.ValueRO.Positions[time % sat.ValueRO.Positions.Length];
             }
 
             i++;
