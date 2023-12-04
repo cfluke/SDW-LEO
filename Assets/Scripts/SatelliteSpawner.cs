@@ -52,12 +52,12 @@ public class SatelliteSpawner : MonoBehaviour
             Satellite satellite = new Satellite(tle);
             em.AddComponentData(entity, new SatellitePositions
             {
-                Positions = PrecalculatePositions(satellite, 1)
+                Positions = PrecalculatePositions(satellite, 500, 15)
             });
         }
     }
 
-    private NativeArray<float3> PrecalculatePositions(Satellite satellite, int count)
+    private NativeArray<float3> PrecalculatePositions(Satellite satellite, int count, int seconds)
     {
         float3[] output = new float3[count];
 
@@ -66,7 +66,7 @@ public class SatelliteSpawner : MonoBehaviour
             try
             {
                 DateTime start = DateTime.Now - TimeSpan.FromDays(30);
-                Eci eci = satellite.PositionEci(start + TimeSpan.FromSeconds(1f) * i);
+                Eci eci = satellite.PositionEci(start + TimeSpan.FromSeconds(i * seconds));
                 Vector3 position = new Vector3((float)eci.Position.X, (float)eci.Position.Z, (float)eci.Position.Y);
                 output[i] = position / 1000;
             }
