@@ -22,8 +22,8 @@ public class CameraRotator : MonoBehaviour
             Vector3 mouseDelta = currentMousePosition - previousMousePosition;
 
             // Rotate the camera around the planet based on mouse movement
-            transform.RotateAround(planet.position, Vector3.up, mouseDelta.x * rotationSpeed);
-            transform.RotateAround(planet.position, transform.right, -mouseDelta.y * rotationSpeed);
+            transform.RotateAround(Vector3.up, mouseDelta.x * rotationSpeed);
+            transform.RotateAround(transform.right, -mouseDelta.y * rotationSpeed);
         }
 
         previousMousePosition = Input.mousePosition;
